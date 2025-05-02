@@ -87,7 +87,7 @@ const ColumnFilters: React.FC<ColumnFiltersProps> = ({
                 <CommandInput placeholder={`Search ${column}...`} />
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup className="max-h-[250px] overflow-auto">
-                  {availableOptions[column]?.map((option) => {
+                  {availableOptions[column] && availableOptions[column].map((option) => {
                     const isSelected = filters[column]?.includes(option) || false;
                     
                     return (
