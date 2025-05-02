@@ -13,7 +13,7 @@ const Dashboard = () => {
   const [data, setData] = useState<Record<string, string>[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filters, setFilters] = useState<Record<string, string>>({});
+  const [filters, setFilters] = useState<Record<string, string[]>>({});
   const [sortConfig, setSortConfig] = useState<{
     key: string;
     direction: 'asc' | 'desc';
@@ -53,15 +53,15 @@ const Dashboard = () => {
     loadData();
   }, []);
 
-  const handleFilterChange = (column: string, value: string) => {
+  const handleFilterChange = (column: string, values: string[]) => {
     setFilters(prev => {
       const newFilters = {
         ...prev
       };
-      if (value === '') {
+      if (values.length === 0) {
         delete newFilters[column];
       } else {
-        newFilters[column] = value;
+        newFilters[column] = values;
       }
       return newFilters;
     });
@@ -95,9 +95,10 @@ const Dashboard = () => {
     if (!data.length) return [];
     return data.filter(row => {
       // Apply column-specific filters
-      const passesColumnFilters = Object.entries(filters).every(([column, filterValue]) => {
-        const cellValue = String(row[column] || '').toLowerCase();
-        return cellValue.includes(filterValue.toLowerCase());
+      const passesColumnFilters = Object.entries(filters).every(([column, filterValues]) => {
+        if (filterValues.length === 0) return true;
+        const cellValue = String(row[column] || '');
+        return filterValues.includes(cellValue);
       });
 
       // Apply global search across all columns
@@ -186,7 +187,8 @@ const Dashboard = () => {
               <ColumnFilters 
                 columns={columns} 
                 filters={filters} 
-                onFilterChange={handleFilterChange} 
+                onFilterChange={handleFilterChange}
+                data={data}
               />
               
               <div className="text-sm text-muted-foreground mb-4">
