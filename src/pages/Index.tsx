@@ -1,19 +1,14 @@
-
 import React from 'react';
 import Dashboard from '@/components/Dashboard';
 import Header from '@/components/Header';
-
 const Index = () => {
-  return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+  return <div className="flex flex-col min-h-screen bg-gray-50">
       <Header />
       
       <div className="bg-[#0072ce] text-white py-8 px-4">
         <div className="container mx-auto">
           <h1 className="text-4xl font-bold mb-2">Curricular Mapping</h1>
-          <p className="text-lg opacity-90">
-            Interactive dashboard for exploring curriculum standards, training modules, and learning objectives.
-          </p>
+          
         </div>
       </div>
       
@@ -26,8 +21,6 @@ const Index = () => {
           &copy; {new Date().getFullYear()} Transfr Data Explorer. All rights reserved.
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
