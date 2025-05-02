@@ -1,11 +1,12 @@
 
-import React, { useState, useMemo } from 'react';
-import FileUploader from './FileUploader';
+import React, { useState, useMemo, useEffect } from 'react';
 import DataTable from './DataTable';
 import DataFilter from './DataFilter';
 import { Button } from "@/components/ui/button";
 import { downloadCSV } from "@/lib/csvUtils";
-import { Download } from "lucide-react";
+import { Download, RefreshCw } from "lucide-react";
+import { fetchCSVData } from "@/services/dataService";
+import { useToast } from "@/components/ui/use-toast";
 
 const Dashboard = () => {
   const [data, setData] = useState<Record<string, string>[]>([]);
@@ -13,14 +14,43 @@ const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState<Record<string, string>>({});
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
-  const handleDataLoaded = (newData: Record<string, string>[], headers: string[]) => {
-    setData(newData);
-    setColumns(headers);
-    setSearchTerm('');
-    setFilters({});
-    setSortConfig(null);
+  const loadData = async () => {
+    setLoading(true);
+    setError(null);
+    
+    const result = await fetchCSVData();
+    
+    if (result.success) {
+      setData(result.data);
+      setColumns(result.headers);
+      setSearchTerm('');
+      setFilters({});
+      setSortConfig(null);
+      
+      // Show success toast
+      toast({
+        title: "Data Loaded Successfully",
+        description: `${result.data.length} rows loaded from data.csv`,
+      });
+    } else {
+      setError(result.error || 'Failed to load data');
+      toast({
+        variant: "destructive",
+        title: "Error Loading Data",
+        description: result.error || 'Failed to load data. Please check if data.csv is available.',
+      });
+    }
+    
+    setLoading(false);
   };
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   const handleFilterChange = (column: string, value: string) => {
     setFilters(prev => {
@@ -103,30 +133,54 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6 w-full">
-      {data.length === 0 ? (
-        <FileUploader onDataLoaded={handleDataLoaded} />
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h2 className="text-2xl font-semibold">Data Explorer</h2>
+        
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            onClick={loadData}
+            disabled={loading}
+            className="flex items-center gap-1"
+          >
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          
+          <Button 
+            onClick={handleExport}
+            disabled={sortedData.length === 0}
+            className="flex items-center gap-2"
+          >
+            <Download className="h-4 w-4" />
+            Export Data
+          </Button>
+        </div>
+      </div>
+      
+      {loading ? (
+        <div className="flex justify-center items-center h-64 bg-white rounded-lg shadow">
+          <div className="flex flex-col items-center gap-2">
+            <RefreshCw className="h-8 w-8 animate-spin text-primary" />
+            <p className="text-muted-foreground">Loading data...</p>
+          </div>
+        </div>
+      ) : error ? (
+        <div className="bg-white rounded-lg shadow p-6 text-center">
+          <div className="flex flex-col items-center gap-4">
+            <div className="text-destructive font-medium">
+              Unable to load data.csv
+            </div>
+            <p className="text-muted-foreground">
+              {error}
+            </p>
+            <Button onClick={loadData}>
+              Try Again
+            </Button>
+          </div>
+        </div>
       ) : (
         <>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <h2 className="text-2xl font-semibold">Data Explorer</h2>
-            <div className="flex gap-2">
-              <Button 
-                variant="outline"
-                onClick={() => handleDataLoaded([], [])}
-              >
-                Upload New File
-              </Button>
-              <Button 
-                onClick={handleExport}
-                disabled={sortedData.length === 0}
-                className="flex items-center gap-2"
-              >
-                <Download className="h-4 w-4" />
-                Export Data
-              </Button>
-            </div>
-          </div>
-          
           <div className="bg-white rounded-lg shadow overflow-hidden">
             <div className="p-4">
               <DataFilter
