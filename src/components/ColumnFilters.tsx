@@ -34,10 +34,11 @@ const ColumnFilters: React.FC<ColumnFiltersProps> = ({
   data
 }) => {
   const [availableOptions, setAvailableOptions] = useState<Record<string, string[]>>({});
+  const [open, setOpen] = useState<Record<string, boolean>>({});
 
   // Extract all unique values for each column
   useEffect(() => {
-    if (!data.length) return;
+    if (!data || !data.length || !columns || !columns.length) return;
     
     const options: Record<string, Set<string>> = {};
     
@@ -61,15 +62,20 @@ const ColumnFilters: React.FC<ColumnFiltersProps> = ({
     setAvailableOptions(sortedOptions);
   }, [data, columns]);
 
+  // Handle popover open/close state
+  const handleOpenChange = (column: string, isOpen: boolean) => {
+    setOpen(prev => ({ ...prev, [column]: isOpen }));
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-6 mt-4">
-      {columns.map((column) => (
+      {columns && columns.map((column) => (
         <div key={column} className="space-y-1">
           <Label htmlFor={`filter-${column}`} className="text-sm font-medium mb-1 block">
             {column}
           </Label>
           
-          <Popover>
+          <Popover open={open[column]} onOpenChange={(isOpen) => handleOpenChange(column, isOpen)}>
             <PopoverTrigger asChild>
               <Button 
                 variant="outline" 
@@ -101,6 +107,7 @@ const ColumnFilters: React.FC<ColumnFiltersProps> = ({
                           
                           onFilterChange(column, newValues);
                         }}
+                        value={option}
                       >
                         <div
                           className={cn(
