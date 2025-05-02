@@ -9,10 +9,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 interface DataFilterProps {
   columns: string[];
   onSearchChange: (search: string) => void;
-  onFilterChange: (column: string, value: string) => void;
+  onFilterChange: (column: string, values: string[]) => void; // Updated to string[] from string
   onClearFilters: () => void;
   searchValue: string;
-  filters: Record<string, string>;
+  filters: Record<string, string[]>; // Updated to string[] from string
 }
 
 const DataFilter: React.FC<DataFilterProps> = ({
@@ -28,7 +28,8 @@ const DataFilter: React.FC<DataFilterProps> = ({
   
   const handleFilterApply = () => {
     if (selectedColumn && filterValue) {
-      onFilterChange(selectedColumn, filterValue);
+      // Update to pass an array containing the single value
+      onFilterChange(selectedColumn, [filterValue]);
       setFilterValue(""); // Reset filter value after applying
     }
   };
@@ -101,16 +102,16 @@ const DataFilter: React.FC<DataFilterProps> = ({
                 <div className="border-t pt-2 mt-2">
                   <h4 className="font-medium text-sm mb-2">Active Filters:</h4>
                   <div className="flex flex-wrap gap-1">
-                    {Object.entries(filters).map(([column, value]) => (
+                    {Object.entries(filters).map(([column, values]) => (
                       <div key={column} className="bg-muted text-xs px-2 py-1 rounded-md flex items-center gap-1">
                         <span>
-                          <strong>{column}:</strong> {value}
+                          <strong>{column}:</strong> {values.join(', ')}
                         </span>
                         <Button
                           variant="ghost"
                           size="sm"
                           className="h-4 w-4 p-0"
-                          onClick={() => onFilterChange(column, "")}
+                          onClick={() => onFilterChange(column, [])}
                         >
                           <X className="h-3 w-3" />
                         </Button>
