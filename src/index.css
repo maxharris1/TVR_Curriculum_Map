@@ -16,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 203 89% 53%;
+    --primary: 203 89% 40%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -33,7 +33,7 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 203 89% 53%;
+    --ring: 203 89% 40%;
 
     --radius: 0.5rem;
   }
@@ -51,4 +51,42 @@
 
 .logo {
   height: 40px;
+}
+
+/* Transfr brand-specific colors */
+.text-transfr-blue {
+  color: #0072ce;
+}
+
+.bg-transfr-blue {
+  background-color: #0072ce;
+}
+
+.border-transfr-blue {
+  border-color: #0072ce;
+}
+
+.hover\:bg-transfr-blue:hover {
+  background-color: #0072ce;
+}
+
+.focus\:border-transfr-blue:focus {
+  border-color: #0072ce;
+}
+
+.focus-visible\:ring-transfr-blue:focus-visible {
+  --tw-ring-color: #0072ce;
+}
+
+/* Table styling improvements */
+.data-table th {
+  background-color: rgba(0, 114, 206, 0.1);
+}
+
+.data-table tr:nth-child(even) {
+  background-color: rgba(0, 114, 206, 0.03);
+}
+
+.data-table tr:hover {
+  background-color: rgba(0, 114, 206, 0.05);
 }

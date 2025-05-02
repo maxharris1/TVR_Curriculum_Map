@@ -8,6 +8,13 @@ const Index = () => {
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Header />
       
+      <div className="bg-[#0072ce] text-white py-8 px-4">
+        <div className="container mx-auto">
+          <h1 className="text-4xl font-bold mb-2">Curricular Mapping</h1>
+          <p className="text-xl opacity-90">Transfr Data Explorer</p>
+        </div>
+      </div>
+      
       <main className="flex-1 container mx-auto py-6 px-4">
         <Dashboard />
       </main>

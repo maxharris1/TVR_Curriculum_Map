@@ -12,6 +12,9 @@ export const fetchCSVData = async (filePath: string = '/data.csv') => {
     const csvText = await response.text();
     const { headers, data } = parseCSV(csvText);
     
+    // Log the data for debugging
+    console.log(`Loaded ${data.length} rows from CSV file`);
+    
     return { 
       success: true,
       headers, 

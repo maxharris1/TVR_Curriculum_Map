@@ -2,6 +2,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import DataTable from './DataTable';
 import DataFilter from './DataFilter';
+import ColumnFilters from './ColumnFilters';
 import { Button } from "@/components/ui/button";
 import { downloadCSV } from "@/lib/csvUtils";
 import { Download, RefreshCw } from "lucide-react";
@@ -127,14 +128,14 @@ const Dashboard = () => {
 
   const handleExport = () => {
     if (sortedData.length > 0) {
-      downloadCSV(sortedData, 'transfr_data_export.csv');
+      downloadCSV(sortedData, 'transfr_curricular_mapping.csv');
     }
   };
 
   return (
     <div className="space-y-6 w-full">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-2xl font-semibold">Data Explorer</h2>
+        <h2 className="text-2xl font-semibold text-[#0072ce]">Data Explorer</h2>
         
         <div className="flex gap-2">
           <Button 
@@ -150,7 +151,7 @@ const Dashboard = () => {
           <Button 
             onClick={handleExport}
             disabled={sortedData.length === 0}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-[#0072ce] hover:bg-[#005bab]"
           >
             <Download className="h-4 w-4" />
             Export Data
@@ -161,7 +162,7 @@ const Dashboard = () => {
       {loading ? (
         <div className="flex justify-center items-center h-64 bg-white rounded-lg shadow">
           <div className="flex flex-col items-center gap-2">
-            <RefreshCw className="h-8 w-8 animate-spin text-primary" />
+            <RefreshCw className="h-8 w-8 animate-spin text-[#0072ce]" />
             <p className="text-muted-foreground">Loading data...</p>
           </div>
         </div>
@@ -174,7 +175,7 @@ const Dashboard = () => {
             <p className="text-muted-foreground">
               {error}
             </p>
-            <Button onClick={loadData}>
+            <Button onClick={loadData} className="bg-[#0072ce] hover:bg-[#005bab]">
               Try Again
             </Button>
           </div>
@@ -190,6 +191,13 @@ const Dashboard = () => {
                 onClearFilters={clearFilters}
                 searchValue={searchTerm}
                 filters={filters}
+              />
+              
+              {/* Adding the new column-specific filters */}
+              <ColumnFilters 
+                columns={columns}
+                filters={filters}
+                onFilterChange={handleFilterChange}
               />
               
               <div className="text-sm text-muted-foreground mb-4">
