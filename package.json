@@ -4,9 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "node scripts/convert-excel.cjs",
     "dev": "vite",
-    "prebuild": "node scripts/convert-excel.cjs",
     "build": "tsc && vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
