@@ -18,7 +18,7 @@ const Index = () => {
       
       <footer className="bg-white border-t py-4">
         <div className="container mx-auto text-center text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} Transfr Data Explorer. All rights reserved.
+          &copy; {new Date().getFullYear()} Transfr inc. All rights reserved.
         </div>
       </footer>
     </div>;
