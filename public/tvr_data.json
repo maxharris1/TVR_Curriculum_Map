@@ -1,4 +1,4 @@
-[
+[ 
   {
     "VR App": "VTF",
     "Module": "Auto Body / Collision",
@@ -201192,6 +201192,19 @@
     "Simulation Name": "Wall Wire Pulling",
     "Duration (Min)": "17",
     "Learning Objective": "Trainee will pull fish tape to safely pull wire.",
+    "Standards Body > Category": "Texas TEKS > Architecture & Construction: Electrical Technology I > Types and Applications of Conductors and Wiring Techniques",
+    "Standards": "130.57.c.9.M > Describe the procedure for pulling wire through conduit.",
+    "Standards_1": "130.57.c.9.M > Describe the procedure for pulling wire through conduit.",
+    "Standards Body": "Texas TEKS Architecture & Construction: Electrical Technology I"
+  },
+  {
+    "VR App": "VTF-EC",
+    "Module": "Electrical Construction",
+    "Industry": "Electrical Construction",
+    "App > Industry/Discipline > Module": "VTF-EC  >  Electrical Construction  >  Electrical Construction",
+    "Simulation Name": "Wall Wire Pulling",
+    "Duration (Min)": "17",
+    "Learning Objective": "Trainee will identify boxes to correctly pull wire.",
     "Standards Body > Category": "Texas TEKS > Architecture & Construction: Electrical Technology I > Types and Applications of Conductors and Wiring Techniques",
     "Standards": "130.57.c.9.M > Describe the procedure for pulling wire through conduit.",
     "Standards_1": "130.57.c.9.M > Describe the procedure for pulling wire through conduit.",
